@@ -8,7 +8,7 @@ export const ToolFallback: ToolCallContentPartComponent = ({
   argsText,
   result,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <div className="mb-4 flex w-full flex-col gap-3 rounded-lg border py-3">
       <div className="flex items-center gap-2 px-4">
@@ -17,11 +17,11 @@ export const ToolFallback: ToolCallContentPartComponent = ({
           Used tool: <b>{toolName}</b>
         </p>
         <div className="flex-grow" />
-        <Button onClick={() => setIsCollapsed(!isCollapsed)}>
+        {/* <Button onClick={() => setIsCollapsed(!isCollapsed)}>
           {isCollapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </Button>
+        </Button> */}
       </div>
-      {!isCollapsed && (
+      {/* {!isCollapsed && (
         <div className="flex flex-col gap-2 border-t pt-2">
           <div className="px-4">
             <pre className="whitespace-pre-wrap">{argsText}</pre>
@@ -37,7 +37,7 @@ export const ToolFallback: ToolCallContentPartComponent = ({
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

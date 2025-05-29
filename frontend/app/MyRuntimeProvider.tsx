@@ -10,9 +10,9 @@ export function MyRuntimeProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const threadIdRef = useRef<string | undefined>();
+  const threadIdRef = useRef<string | undefined>(null);
   const runtime = useLangGraphRuntime({
-    threadId: threadIdRef.current,
+    threadId: threadIdRef.current ?? undefined,
     stream: async (messages) => {
       if (!threadIdRef.current) {
         const { thread_id } = await createThread();

@@ -13,17 +13,11 @@ export default function Home() {
     <div className="flex h-full flex-col">
       <Thread
         welcome={{
-          suggestions: [
-            {
-              prompt: "How much revenue did Apple make last year?",
-            },
-            {
-              prompt: "Is McDonald's profitable?",
-            },
-            {
-              prompt: "What's the current stock price of Tesla?",
-            },
-          ],
+          message:
+            "您好，我是九畴，一个工业智能体，能帮您进行运维智能决策、故障根因分析、全景自动化报告、AI质检等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？",
+        }}
+        assistantAvatar={{
+          fallback: "九畴",
         }}
         assistantMessage={{ components: { Text: MarkdownText, ToolFallback } }}
         tools={[PriceSnapshotTool, PurchaseStockTool]}

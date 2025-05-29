@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build  && next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -14,6 +14,7 @@
     "@assistant-ui/react-markdown": "^0.7.10",
     "@langchain/langgraph-sdk": "^0.0.36",
     "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-tooltip": "^1.2.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",

@@ -34,7 +34,7 @@ async function handleRequest(req: NextRequest, method: string) {
 
     const res = await fetch(
       `${process.env["LANGGRAPH_API_URL"]}/${path}${queryString}`,
-      options,
+      options
     );
 
     return new NextResponse(res.body, {
