@@ -17,11 +17,12 @@ import {
   SendHorizontalIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import { makeMarkdownText } from "@assistant-ui/react-markdown";
 import { Button } from "@/components/ui/button";
-import { MarkdownText } from "@/components/assistant-ui/markdown-text";
 import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button";
-
+import { ToolFallback } from "../tools/ToolFallback";
+import { Avatar } from "antd";
+const MarkdownText = makeMarkdownText({});
 export const Thread: FC = () => {
   return (
     <ThreadPrimitive.Root
@@ -73,9 +74,12 @@ const ThreadWelcome: FC = () => {
     <ThreadPrimitive.Empty>
       <div className="flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
         <div className="flex w-full flex-grow flex-col items-center justify-center">
-          <p className="mt-4 font-medium">How can I help you today?</p>
+          <Avatar size={"large"}>九畴</Avatar>
+          <p className="mt-4 font-medium text-center">
+            您好，我是九畴，一个工业智能体，能帮您进行运维智能决策、故障根因分析、全景自动化报告、AI质检等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
+          </p>
         </div>
-        <ThreadWelcomeSuggestions />
+        {/* <ThreadWelcomeSuggestions /> */}
       </div>
     </ThreadPrimitive.Empty>
   );
@@ -114,7 +118,7 @@ const Composer: FC = () => {
       <ComposerPrimitive.Input
         rows={1}
         autoFocus
-        placeholder="Write a message..."
+        placeholder="请填写..."
         className="placeholder:text-muted-foreground max-h-40 flex-grow resize-none border-none bg-transparent px-2 py-4 text-sm outline-none focus:ring-0 disabled:cursor-not-allowed"
       />
       <ComposerAction />
@@ -154,10 +158,14 @@ const ComposerAction: FC = () => {
 const UserMessage: FC = () => {
   return (
     <MessagePrimitive.Root className="grid w-full max-w-[var(--thread-max-width)] auto-rows-auto grid-cols-[minmax(72px,1fr)_auto] gap-y-2 py-4 [&:where(>*)]:col-start-2">
-      <UserActionBar />
-
-      <div className="bg-muted text-foreground col-start-2 row-start-2 max-w-[calc(var(--thread-max-width)*0.8)] break-words rounded-3xl px-5 py-2.5">
-        <MessagePrimitive.Content />
+      {/* <UserActionBar /> */}
+      <div className="flex flex-row gap-3 ml-auto">
+        <div className="bg-muted text-foreground col-start-2 row-start-2 max-w-[calc(var(--thread-max-width)*0.8)] break-words rounded-3xl px-5 py-2.5">
+          <MessagePrimitive.Content />
+        </div>
+        <Avatar size={"large"} className="mt-0.5">
+          用户
+        </Avatar>
       </div>
 
       <BranchPicker className="col-span-full col-start-1 row-start-3 -mr-1 justify-end" />
@@ -201,12 +209,23 @@ const EditComposer: FC = () => {
 const AssistantMessage: FC = () => {
   return (
     <MessagePrimitive.Root className="relative grid w-full max-w-[var(--thread-max-width)] grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
-      <div className="text-foreground col-span-2 col-start-2 row-start-1 my-1.5 max-w-[calc(var(--thread-max-width)*0.8)] break-words leading-7">
-        <MessagePrimitive.Content components={{ Text: MarkdownText }} />
+      <div className="flex flex-row gap-3">
+        <Avatar size={"large"} className="mt-2">
+          九畴
+        </Avatar>
+        <div className="text-foreground col-span-2 col-start-2 row-start-1 my-1.5 max-w-[calc(var(--thread-max-width)*0.8)] break-words leading-7">
+          <MessagePrimitive.Content
+            components={{
+              Text: MarkdownText,
+              tools: {
+                Fallback: ToolFallback,
+              },
+            }}
+          />
+        </div>
       </div>
 
       <AssistantActionBar />
-
       <BranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
     </MessagePrimitive.Root>
   );
@@ -221,7 +240,7 @@ const AssistantActionBar: FC = () => {
       className="text-muted-foreground data-[floating]:bg-background col-start-3 row-start-2 -ml-1 flex gap-1 data-[floating]:absolute data-[floating]:rounded-md data-[floating]:border data-[floating]:p-1 data-[floating]:shadow-sm"
     >
       <ActionBarPrimitive.Copy asChild>
-        <TooltipIconButton tooltip="Copy">
+        <TooltipIconButton tooltip="复制">
           <MessagePrimitive.If copied>
             <CheckIcon />
           </MessagePrimitive.If>
@@ -230,11 +249,11 @@ const AssistantActionBar: FC = () => {
           </MessagePrimitive.If>
         </TooltipIconButton>
       </ActionBarPrimitive.Copy>
-      <ActionBarPrimitive.Reload asChild>
+      {/* <ActionBarPrimitive.Reload asChild>
         <TooltipIconButton tooltip="Refresh">
           <RefreshCwIcon />
         </TooltipIconButton>
-      </ActionBarPrimitive.Reload>
+      </ActionBarPrimitive.Reload> */}
     </ActionBarPrimitive.Root>
   );
 };
