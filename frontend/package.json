@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 26116",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 26115",
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.2",
     "@assistant-ui/react": "^0.7.35",
     "@assistant-ui/react-langgraph": "^0.1.16",
     "@assistant-ui/react-markdown": "^0.7.10",

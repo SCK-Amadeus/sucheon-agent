@@ -1,18 +1,25 @@
 import { ToolCallContentPartComponent } from "@assistant-ui/react";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useState } from "react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Loader2,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 import { Button } from "../ui/button";
 
-export const ToolFallback: ToolCallContentPartComponent = ({
-  toolName,
-  argsText,
-  result,
-}) => {
+export const ToolFallback: ToolCallContentPartComponent = (props) => {
+  const { toolName, argsText, result, status } = props;
+  const isRunning = useMemo(() => status.type === "running", [status]);
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <div className="mb-4 flex w-full flex-col gap-3 rounded-lg border py-3">
       <div className="flex items-center gap-2 px-4">
-        <CheckIcon className="size-4" />
+        {isRunning ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <CheckIcon className="size-4" />
+        )}
         <p className="">
           Used tool: <b>{toolName}</b>
         </p>

@@ -3,7 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Montserrat } from "next/font/google";
 import { MyRuntimeProvider } from "./MyRuntimeProvider";
-
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -14,7 +14,10 @@ export default function RootLayout({
   return (
     <MyRuntimeProvider>
       <html lang="en">
-        <body className={cn(montserrat.className, "h-dvh")}>{children}</body>
+        <body className={cn(montserrat.className, "h-dvh")}>
+          <AntdRegistry>{children}</AntdRegistry>
+          {/* {children} */}
+        </body>
       </html>
     </MyRuntimeProvider>
   );

@@ -22,7 +22,22 @@ import { Button } from "@/components/ui/button";
 import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button";
 import { ToolFallback } from "../tools/ToolFallback";
 import { Avatar } from "antd";
-const MarkdownText = makeMarkdownText({});
+const MarkdownText = makeMarkdownText({
+  components: {
+    a: ({ children, href }) => {
+      return (
+        <a
+          href={href}
+          className="aui-md-a"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+});
 export const Thread: FC = () => {
   return (
     <ThreadPrimitive.Root
@@ -74,9 +89,11 @@ const ThreadWelcome: FC = () => {
     <ThreadPrimitive.Empty>
       <div className="flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
         <div className="flex w-full flex-grow flex-col items-center justify-center">
-          <Avatar size={"large"}>九畴</Avatar>
+          <Avatar size={"large"} className="!bg-[#FF8A08]">
+            九畴
+          </Avatar>
           <p className="mt-4 font-medium text-center">
-            您好，我是九畴，一个工业智能体，能帮您进行运维智能决策、故障根因分析、全景自动化报告、AI质检等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
+            您好，我是九畴，一个工业智能体，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
           </p>
         </div>
         {/* <ThreadWelcomeSuggestions /> */}
@@ -163,7 +180,7 @@ const UserMessage: FC = () => {
         <div className="bg-muted text-foreground col-start-2 row-start-2 max-w-[calc(var(--thread-max-width)*0.8)] break-words rounded-3xl px-5 py-2.5">
           <MessagePrimitive.Content />
         </div>
-        <Avatar size={"large"} className="mt-0.5">
+        <Avatar size={"large"} className="mt-0.5 shrink-0 !bg-[#D0D7DB]">
           用户
         </Avatar>
       </div>
@@ -210,7 +227,7 @@ const AssistantMessage: FC = () => {
   return (
     <MessagePrimitive.Root className="relative grid w-full max-w-[var(--thread-max-width)] grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
       <div className="flex flex-row gap-3">
-        <Avatar size={"large"} className="mt-2">
+        <Avatar size={"large"} className="mt-2 shrink-0 !bg-[#FF8A08]">
           九畴
         </Avatar>
         <div className="text-foreground col-span-2 col-start-2 row-start-1 my-1.5 max-w-[calc(var(--thread-max-width)*0.8)] break-words leading-7">
