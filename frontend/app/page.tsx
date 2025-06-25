@@ -12,7 +12,7 @@ import {
 } from "@assistant-ui/react-markdown";
 import { ThreadList } from "@/components/assistant-ui/thread-list";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { Button } from "antd";
+import { Button, Splitter } from "antd";
 import { X } from "lucide-react";
 import { ThreadListContext } from "./MyRuntimeProvider";
 import ReactMarkdown from "react-markdown";
@@ -83,7 +83,8 @@ export default function Home() {
       }}
     >
       <div
-        className={`transition-all duration-300 grid h-full ${gridCols}`}
+        className={`transition-all duration-300 flex h-full`}
+        // className={`transition-all duration-300 grid h-full list-thread`}
         // ${isShowReport ? `grid-cols-[${isShowList ? "200px_" : ""}1fr_max(400px,20%)]` : `grid-cols-[${isShowList ? "200px_" : "0fr_"}1fr]`}`
       >
         {/* <Thread
@@ -99,14 +100,187 @@ export default function Home() {
       /> */}
         <ListContext.Provider value={{ isShowList, setIsShowList }}>
           <div
-            className={`transition-all h-full duration-300 overflow-hidden
+            className={`transition-all h-full duration-300 overflow-hidden w-[200px]
               `}
           >
             <ThreadList />
           </div>
         </ListContext.Provider>
+        <div className="flex-1 overflow-hidden">
+          <Splitter
+            style={{
+              height: "100%",
+              width: "100%",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <Splitter.Panel min="20%" max="100%">
+              <Thread />
+            </Splitter.Panel>
+            {isShowReport && (
+              <Splitter.Panel defaultSize="40%" min="20%" max="100%">
+                <div className="flex h-full flex-col bg-[rgb(249,250,251)]">
+                  <div className="flex  p-4 bg-[rgb(249,250,251)]">
+                    <div className="text-lg font-bold">Agent工作台</div>
+                    <div
+                      className="ml-auto cursor-pointer"
+                      onClick={() => setIsShowReport(false)}
+                    >
+                      <X className="size-6 " />
+                    </div>
+                  </div>
+                  {reportType === "iframe" ? (
+                    <iframe
+                      src={reportUrl}
+                      className="h-full w-full"
+                      title="report"
+                    />
+                  ) : (
+                    <div className="w-full grow overflow-y-auto p-4 ">
+                      <div className="min-h-full bg-[rgb(243,243,243)]  p-4 overflow-y-auto max-h-[calc(100vh-200px)]  rounded-md">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h1: ({ node, className, ...props }) => (
+                              <h1
+                                className={classNames("aui-md-h1", className)}
+                                {...props}
+                              />
+                            ),
+                            h2: ({ node, className, ...props }) => (
+                              <h2
+                                className={classNames("aui-md-h2", className)}
+                                {...props}
+                              />
+                            ),
+                            h3: ({ node, className, ...props }) => (
+                              <h3
+                                className={classNames("aui-md-h3", className)}
+                                {...props}
+                              />
+                            ),
+                            h4: ({ node, className, ...props }) => (
+                              <h4
+                                className={classNames("aui-md-h4", className)}
+                                {...props}
+                              />
+                            ),
+                            h5: ({ node, className, ...props }) => (
+                              <h5
+                                className={classNames("aui-md-h5", className)}
+                                {...props}
+                              />
+                            ),
+                            h6: ({ node, className, ...props }) => (
+                              <h6
+                                className={classNames("aui-md-h6", className)}
+                                {...props}
+                              />
+                            ),
+                            p: ({ node, className, ...props }) => (
+                              <p
+                                className={classNames("aui-md-p", className)}
+                                {...props}
+                              />
+                            ),
+                            a: ({ node, className, ...props }) => (
+                              <a
+                                className={classNames("aui-md-a", className)}
+                                {...props}
+                              />
+                            ),
+                            blockquote: ({ node, className, ...props }) => (
+                              <blockquote
+                                className={classNames(
+                                  "aui-md-blockquote",
+                                  className
+                                )}
+                                {...props}
+                              />
+                            ),
+                            ul: ({ node, className, ...props }) => (
+                              <ul
+                                className={classNames("aui-md-ul", className)}
+                                {...props}
+                              />
+                            ),
+                            ol: ({ node, className, ...props }) => (
+                              <ol
+                                className={classNames("aui-md-ol", className)}
+                                {...props}
+                              />
+                            ),
+                            hr: ({ node, className, ...props }) => (
+                              <hr
+                                className={classNames("aui-md-hr", className)}
+                                {...props}
+                              />
+                            ),
+                            table: ({ node, className, ...props }) => (
+                              <table
+                                className={classNames(
+                                  "aui-md-table",
+                                  className
+                                )}
+                                {...props}
+                              />
+                            ),
+                            th: ({ node, className, ...props }) => (
+                              <th
+                                className={classNames("aui-md-th", className)}
+                                {...props}
+                              />
+                            ),
+                            td: ({ node, className, ...props }) => (
+                              <td
+                                className={classNames("aui-md-td", className)}
+                                {...props}
+                              />
+                            ),
+                            tr: ({ node, className, ...props }) => (
+                              <tr
+                                className={classNames("aui-md-tr", className)}
+                                {...props}
+                              />
+                            ),
+                            sup: ({ node, className, ...props }) => (
+                              <sup
+                                className={classNames("aui-md-sup", className)}
+                                {...props}
+                              />
+                            ),
+                            pre: ({ node, className, ...props }) => (
+                              <pre
+                                className={classNames("aui-md-pre", className)}
+                                {...props}
+                              />
+                            ),
+                            code: ({ node, className, ...props }) => {
+                              const isCodeBlock = useIsMarkdownCodeBlock();
+                              return (
+                                <code
+                                  className={classNames(
+                                    !isCodeBlock && "aui-md-inline-code",
+                                    className
+                                  )}
+                                  {...props}
+                                />
+                              );
+                            },
+                          }}
+                        >
+                          {markdownText}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Splitter.Panel>
+            )}
+          </Splitter>
+        </div>
 
-        <Thread />
+        {/* <Thread />
         {isShowReport && (
           <div className="flex h-full flex-col bg-[rgb(249,250,251)]">
             <div className="flex  p-4 bg-[rgb(249,250,251)]">
@@ -258,7 +432,7 @@ export default function Home() {
               </div>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </ReportContext.Provider>
   );
