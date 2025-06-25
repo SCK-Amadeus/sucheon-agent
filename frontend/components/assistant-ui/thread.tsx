@@ -4,8 +4,10 @@ import {
   ComposerPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
+  useComposerRuntime,
+  useThreadRuntime,
 } from "@assistant-ui/react";
-import type { FC } from "react";
+import { useContext, type FC } from "react";
 import {
   ArrowDownIcon,
   CheckIcon,
@@ -22,15 +24,27 @@ import { Button } from "@/components/ui/button";
 import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button";
 import { ToolFallback } from "../tools/ToolFallback";
 import { Avatar } from "antd";
+import { ListContext, ReportContext } from "@/app/page";
+import Image from "next/image";
 const MarkdownText = makeMarkdownText({
   components: {
     a: ({ children, href }) => {
+      const { setIsShowReport, setReportUrl, setReportType, setMarkdownText } =
+        useContext(ReportContext);
+      const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsShowReport(true);
+        // setReportUrl("https://www.baidu.com?markdown=123");
+        setReportUrl(href ?? "");
+      };
       return (
         <a
           href={href}
           className="aui-md-a"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleClick}
         >
           {children}
         </a>
@@ -39,6 +53,7 @@ const MarkdownText = makeMarkdownText({
   },
 });
 export const Thread: FC = () => {
+  const { isShowList, setIsShowList } = useContext(ListContext);
   return (
     <ThreadPrimitive.Root
       className="bg-background box-border flex h-full flex-col overflow-hidden"
@@ -48,7 +63,6 @@ export const Thread: FC = () => {
     >
       <ThreadPrimitive.Viewport className="flex h-full flex-col items-center overflow-y-scroll scroll-smooth bg-inherit px-4 pt-8">
         <ThreadWelcome />
-
         <ThreadPrimitive.Messages
           components={{
             UserMessage: UserMessage,
@@ -56,11 +70,9 @@ export const Thread: FC = () => {
             AssistantMessage: AssistantMessage,
           }}
         />
-
         <ThreadPrimitive.If empty={false}>
           <div className="min-h-8 flex-grow" />
         </ThreadPrimitive.If>
-
         <div className="sticky bottom-0 mt-3 flex w-full max-w-[var(--thread-max-width)] flex-col items-center justify-end rounded-t-lg bg-inherit pb-4">
           <ThreadScrollToBottom />
           <Composer />
@@ -89,9 +101,12 @@ const ThreadWelcome: FC = () => {
     <ThreadPrimitive.Empty>
       <div className="flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
         <div className="flex w-full flex-grow flex-col items-center justify-center">
-          <Avatar size={"large"} className="!bg-[#FF8A08]">
-            九畴
-          </Avatar>
+          <Image
+            src="/logo_transparent.png"
+            alt="logo"
+            width={32}
+            height={32}
+          />
           <p className="mt-4 font-medium text-center">
             您好，我是九畴，一个工业智能体，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
           </p>
@@ -144,14 +159,16 @@ const Composer: FC = () => {
 };
 
 const ComposerAction: FC = () => {
+  // const composerRuntime = useComposerRuntime();
+  // const threadComposerRuntime = useThreadRuntime();
   return (
     <>
       <ThreadPrimitive.If running={false}>
         <ComposerPrimitive.Send asChild>
           <TooltipIconButton
-            tooltip="Send"
+            tooltip="发送"
             variant="default"
-            className="my-2.5 size-8 p-2 transition-opacity ease-in"
+            className="my-2.5 size-8 p-2 transition-opacity ease-in bg-[#EC4600]"
           >
             <SendHorizontalIcon />
           </TooltipIconButton>
@@ -160,9 +177,16 @@ const ComposerAction: FC = () => {
       <ThreadPrimitive.If running>
         <ComposerPrimitive.Cancel asChild>
           <TooltipIconButton
-            tooltip="Cancel"
+            // disabled={false}
+            // onClick={() => {
+            //   // console.log(composerRuntime.cancel);
+            //   console.log(threadComposerRuntime.cancelRun);
+            //   composerRuntime.cancel();
+            //   // thread.cancelRun();
+            // }}
+            tooltip="取消"
             variant="default"
-            className="my-2.5 size-8 p-2 transition-opacity ease-in"
+            className="my-2.5 size-8 p-2 transition-opacity ease-in bg-[#EC4600] "
           >
             <CircleStopIcon />
           </TooltipIconButton>
@@ -180,9 +204,9 @@ const UserMessage: FC = () => {
         <div className="bg-muted text-foreground col-start-2 row-start-2 max-w-[calc(var(--thread-max-width)*0.8)] break-words rounded-3xl px-5 py-2.5">
           <MessagePrimitive.Content />
         </div>
-        <Avatar size={"large"} className="mt-0.5 shrink-0 !bg-[#D0D7DB]">
+        {/* <Avatar size={"large"} className="mt-0.5 shrink-0 !bg-[#D0D7DB]">
           用户
-        </Avatar>
+        </Avatar> */}
       </div>
 
       <BranchPicker className="col-span-full col-start-1 row-start-3 -mr-1 justify-end" />
@@ -227,9 +251,13 @@ const AssistantMessage: FC = () => {
   return (
     <MessagePrimitive.Root className="relative grid w-full max-w-[var(--thread-max-width)] grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4">
       <div className="flex flex-row gap-3">
-        <Avatar size={"large"} className="mt-2 shrink-0 !bg-[#FF8A08]">
-          九畴
-        </Avatar>
+        <Image
+          src="/logo_transparent.png"
+          alt="logo"
+          width={32}
+          height={32}
+          className="h-8 mt-1"
+        />
         <div className="text-foreground col-span-2 col-start-2 row-start-1 my-1.5 max-w-[calc(var(--thread-max-width)*0.8)] break-words leading-7">
           <MessagePrimitive.Content
             components={{

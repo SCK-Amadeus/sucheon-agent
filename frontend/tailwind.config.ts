@@ -74,6 +74,12 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      gridTemplateColumns: {
+        "list-thread-report": "200px 1fr max(400px,40%)",
+        "thread-report": "0 1fr max(400px,40%)",
+        "list-thread": "200px 1fr",
+        thread: "0 1fr",
+      },
     },
   },
   plugins: [

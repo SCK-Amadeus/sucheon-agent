@@ -20,6 +20,13 @@ export const createThread = async () => {
   return client.threads.create();
 };
 
+export const getThreadHistory = async (threadId: string) => {
+  const client = createClient();
+  return client.threads.getHistory(threadId, {
+    limit: 100,
+  });
+};
+
 export const getThreadState = async (
   threadId: string
 ): Promise<ThreadState<Record<string, any>>> => {
