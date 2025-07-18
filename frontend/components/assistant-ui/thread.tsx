@@ -108,7 +108,7 @@ const ThreadWelcome: FC = () => {
             height={32}
           />
           <p className="mt-4 font-medium text-center">
-            您好，我是九畴，一个工业智能体，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
+            您好，我是九畴，一个工业大模型，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
           </p>
         </div>
         {/* <ThreadWelcomeSuggestions /> */}

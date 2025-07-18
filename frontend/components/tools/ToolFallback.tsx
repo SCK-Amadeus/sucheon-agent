@@ -15,11 +15,12 @@ export const ToolFallback: ToolCallContentPartComponent = (props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { isLast } = useMessage();
   const toolNameMap = {
-    intelligent_analysis_suggestions: "设备智能分析",
+    intelligent_analysis_suggestions: "设备运维决策",
     search_equipment_data: "设备数据查询",
     analysis_root_cause: "设备故障根因分析",
     panoramic_equipment_status_report: "设备健康状态全景报告",
     data_acquisition_analysis_report: "数采系统数据分析",
+    compare_equipment_analysis: "设备报告对比分析",
   };
   const { setIsShowReport, setReportUrl, setReportType, setMarkdownText } =
     useContext(ReportContext);
@@ -50,7 +51,8 @@ export const ToolFallback: ToolCallContentPartComponent = (props) => {
       status.type === "complete" &&
       isLast &&
       (toolName === "analysis_root_cause" ||
-        toolName === "data_acquisition_analysis_report")
+        toolName === "data_acquisition_analysis_report" ||
+        toolName === "compare_equipment_analysis")
     ) {
       setIsShowReport(true);
       setReportType("markdown");
