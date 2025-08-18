@@ -7,7 +7,7 @@ import {
   useComposerRuntime,
   useThreadRuntime,
 } from "@assistant-ui/react";
-import { useContext, type FC } from "react";
+import { useContext, useState, useEffect, useRef, type FC } from "react";
 import {
   ArrowDownIcon,
   CheckIcon,
@@ -104,9 +104,10 @@ const ThreadWelcome: FC = () => {
           <Image
             src="/logo_transparent.png"
             alt="logo"
-            width={32}
-            height={32}
+            width={150}
+            height={150}
           />
+          <h6 className="text-2xl font-bold p-4">九畴工业大模型</h6>
           <p className="mt-4 font-medium text-center">
             您好，我是九畴，一个工业大模型，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
           </p>
@@ -144,17 +145,100 @@ const ThreadWelcomeSuggestions: FC = () => {
   );
 };
 
+// 预设问题列表
+const PRESET_QUESTIONS = [
+  '介绍下你自己',
+  '你都有哪些能力',
+  '你都管理了哪些设备',
+  '都有哪些设备有历史故障记录',
+  '帮我分析下16号轧机',
+  '帮我分析18B的故障根因',
+  '请帮我看下16H最近一次润滑操作后，设备状态是否有变化',
+  '帮我生成2024年9月到2025年4月设备全景报告'
+];
+
 const Composer: FC = () => {
+  const [showPresets, setShowPresets] = useState(false);
+  const composerRef = useRef<HTMLDivElement>(null);
+  const presetPopupRef = useRef<HTMLDivElement>(null);
+
+  // 点击外部区域关闭弹窗
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        presetPopupRef.current &&
+        !presetPopupRef.current.contains(event.target as Node) &&
+        composerRef.current &&
+        !composerRef.current.contains(event.target as Node)
+      ) {
+        setShowPresets(false);
+      }
+    };
+
+    if (showPresets) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showPresets]);
+
+  const handlePresetToggle = () => {
+    setShowPresets(!showPresets);
+  };
+
   return (
-    <ComposerPrimitive.Root className="focus-within:border-ring/20 flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in">
-      <ComposerPrimitive.Input
-        rows={1}
-        autoFocus
-        placeholder="请填写..."
-        className="placeholder:text-muted-foreground max-h-40 flex-grow resize-none border-none bg-transparent px-2 py-4 text-sm outline-none focus:ring-0 disabled:cursor-not-allowed"
-      />
-      <ComposerAction />
-    </ComposerPrimitive.Root>
+    <div className="relative w-full" ref={composerRef}>
+      {/* 预设问题弹窗 */}
+      {showPresets && (
+        <div
+          ref={presetPopupRef}
+          className="absolute bottom-full right-0 mb-2 flex flex-col-reverse gap-2 z-50"
+        >
+          {PRESET_QUESTIONS.map((question, index) => (
+            <ThreadPrimitive.Suggestion
+              key={index}
+              className={cn(
+                "w-80 p-3 bg-white border border-gray-200 rounded-lg shadow-lg cursor-pointer",
+                "text-sm text-gray-700 transition-all duration-300 ease-out",
+                "hover:shadow-xl hover:-translate-y-1 hover:border-gray-300",
+                "opacity-0 preset-card-animate"
+              )}
+              style={{
+                animationDelay: `${index * 50}ms`
+              }}
+              prompt={question}
+              method="replace"
+              autoSend
+              onClick={() => setShowPresets(false)}
+            >
+              {question}
+            </ThreadPrimitive.Suggestion>
+          ))}
+        </div>
+      )}
+      
+      <ComposerPrimitive.Root className="focus-within:border-ring/20 flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in">
+        <ComposerPrimitive.Input
+          rows={1}
+          autoFocus
+          placeholder="请填写..."
+          className="placeholder:text-muted-foreground max-h-40 flex-grow resize-none border-none bg-transparent px-2 py-4 text-sm outline-none focus:ring-0 disabled:cursor-not-allowed"
+        />
+        <ComposerAction />
+        <TooltipIconButton
+          style={{
+            marginLeft: "10px",
+          }}
+          tooltip="提示"
+          variant="default"
+          className="my-2.5 size-8 p-1 transition-opacity ease-in bg-[#f0f0f0] hover:bg-[#e0e0e0]"
+          onClick={handlePresetToggle}
+        >
+          <Image src="/logo_transparent.png" alt="logo" width={40} height={40} />
+        </TooltipIconButton>
+      </ComposerPrimitive.Root>
+    </div>
   );
 };
 
