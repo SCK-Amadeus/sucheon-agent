@@ -107,8 +107,8 @@ const ThreadWelcome: FC = () => {
             width={150}
             height={150}
           />
-          <h6 className="text-2xl font-bold p-4">九畴工业大模型</h6>
-          <p className="mt-4 font-medium text-center">
+          <h6 className="text-[38px] font-bold p-4">九畴工业大模型</h6>
+          <p className="mt-4 font-medium text-center text-[20px]">
             您好，我是九畴，一个工业大模型，能帮您查询设备数据、运维智能决策分析、故障根因分析等，希望能成为您得力的工业智能助手。请告诉我您需要什么帮助？
           </p>
         </div>
@@ -125,7 +125,6 @@ const ThreadWelcomeSuggestions: FC = () => {
         className="hover:bg-muted/80 flex max-w-sm grow basis-0 flex-col items-center justify-center rounded-lg border p-3 transition-colors ease-in"
         prompt="What is the weather in Tokyo?"
         method="replace"
-        autoSend
       >
         <span className="line-clamp-2 text-ellipsis text-sm font-semibold">
           What is the weather in Tokyo?
@@ -135,7 +134,6 @@ const ThreadWelcomeSuggestions: FC = () => {
         className="hover:bg-muted/80 flex max-w-sm grow basis-0 flex-col items-center justify-center rounded-lg border p-3 transition-colors ease-in"
         prompt="What is assistant-ui?"
         method="replace"
-        autoSend
       >
         <span className="line-clamp-2 text-ellipsis text-sm font-semibold">
           What is assistant-ui?
@@ -147,14 +145,14 @@ const ThreadWelcomeSuggestions: FC = () => {
 
 // 预设问题列表
 const PRESET_QUESTIONS = [
-  '介绍下你自己',
-  '你都有哪些能力',
-  '你都管理了哪些设备',
-  '都有哪些设备有历史故障记录',
-  '帮我分析下16号轧机',
-  '帮我分析18B的故障根因',
-  '请帮我看下16H最近一次润滑操作后，设备状态是否有变化',
-  '帮我生成2024年9月到2025年4月设备全景报告'
+  "介绍下你自己",
+  "你都有哪些能力",
+  "你都管理了哪些设备",
+  "都有哪些设备有历史故障记录",
+  "帮我分析下16号轧机",
+  "帮我分析18B的故障根因",
+  "请帮我看下16H最近一次润滑操作后，设备状态是否有变化",
+  "帮我生成2024年9月到2025年4月设备全景报告",
 ];
 
 const Composer: FC = () => {
@@ -176,9 +174,9 @@ const Composer: FC = () => {
     };
 
     if (showPresets) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }
   }, [showPresets]);
@@ -205,11 +203,10 @@ const Composer: FC = () => {
                 "opacity-0 preset-card-animate"
               )}
               style={{
-                animationDelay: `${index * 50}ms`
+                animationDelay: `${index * 50}ms`,
               }}
               prompt={question}
               method="replace"
-              autoSend
               onClick={() => setShowPresets(false)}
             >
               {question}
@@ -217,7 +214,7 @@ const Composer: FC = () => {
           ))}
         </div>
       )}
-      
+
       <ComposerPrimitive.Root className="focus-within:border-ring/20 flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in">
         <ComposerPrimitive.Input
           rows={1}
@@ -227,6 +224,7 @@ const Composer: FC = () => {
         />
         <ComposerAction />
         <TooltipIconButton
+          type="button"
           style={{
             marginLeft: "10px",
           }}
@@ -235,7 +233,12 @@ const Composer: FC = () => {
           className="my-2.5 size-8 p-1 transition-opacity ease-in bg-[#f0f0f0] hover:bg-[#e0e0e0]"
           onClick={handlePresetToggle}
         >
-          <Image src="/logo_transparent.png" alt="logo" width={40} height={40} />
+          <Image
+            src="/logo_transparent.png"
+            alt="logo"
+            width={40}
+            height={40}
+          />
         </TooltipIconButton>
       </ComposerPrimitive.Root>
     </div>

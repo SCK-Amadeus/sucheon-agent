@@ -28,7 +28,7 @@ import { useHover } from "ahooks";
 export const ThreadList: FC = () => {
   const { isShowList, setIsShowList } = useContext(ListContext);
   return (
-    <div className="flex flex-col items-stretch gap-4 bg-[rgb(243,243,243)] px-2 py-4 h-full">
+    <div className="flex flex-col items-stretch gap-4 bg-[#E8E9EC] px-2 py-4 h-full">
       <div className="text-2xl font-bold flex items-center justify-between">
         <Image src="/logo_transparent.png" alt="logo" width={32} height={32} />
         <div
