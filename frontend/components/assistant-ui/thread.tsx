@@ -357,8 +357,8 @@ const AssistantMessage: FC = () => {
         </div>
       </div>
 
-      <AssistantActionBar />
-      <BranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
+      {/* <AssistantActionBar /> */}
+      {/* <BranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" /> */}
     </MessagePrimitive.Root>
   );
 };
